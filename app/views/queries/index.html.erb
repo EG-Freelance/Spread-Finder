@@ -1,0 +1,12 @@
+<p id="notice"><%= notice %></p>
+
+<% if user_signed_in? %>
+  <%= form_for :new_sym, :remote => true, :url => add_sym_path, :html => { :class => "form-inline add-form" } do |f| %>
+    <%= f.text_field :sym, :class => "form-control add-field", :placeholder => "New Symbol" %>
+    <%= f.submit "Add", :class => "btn btn-outline-success" %>
+  <% end %>
+
+  <div id="data-table">
+    <%= render 'data_table' %>
+  </div>
+<% end %>
