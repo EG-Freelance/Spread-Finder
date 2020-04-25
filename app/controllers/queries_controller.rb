@@ -12,7 +12,7 @@ class QueriesController < ApplicationController
   end
 
   def add
-    sym = params['new_sym']["sym"]
+    sym = params['new_sym']["sym"].upcase
     @query = Query.first
     unless @query.symbols.match(/(?:,|\A)#{sym}(?:,|\z)/)
       new_sym = (!@query.symbols.blank? ? @query.symbols + ",#{sym}" : sym)
