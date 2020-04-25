@@ -15,7 +15,7 @@ class QueriesController < ApplicationController
     sym = params['new_sym']["sym"]
     @query = Query.first
     unless @query.symbols.match(/(?:,|\A)#{sym}(?:,|\z)/)
-      new_sym = @query.symbols + ",#{sym}"
+      new_sym = (!@query.symbols.blank? ? @query.symbols + ",#{sym}" : sym)
       @query.update(symbols: new_sym)
       @output = @query.get_data.sort
 
