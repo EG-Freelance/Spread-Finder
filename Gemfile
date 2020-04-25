@@ -18,7 +18,7 @@ end
 gem 'devise'
 gem 'curb'
 gem 'capybara'
-gem 'selenium-webdriver', '3.11'
+gem 'capybara-selenium'
 gem 'webdrivers'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
