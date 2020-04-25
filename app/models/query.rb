@@ -3,7 +3,7 @@ class Query < ApplicationRecord
     def get_info(sym, auth_token)
       date = Date.parse("Friday")
       Date.today >= date ? date = (date + 7.days).strftime("%Y-%m-%d") : date = date.strftime("%Y-%m-%d")
-      request_url = "https://api.tdameritrade.com/v1/marketdata/chains?apikey=#{ENV['TD_CONSUMER_KEY']}&symbol=#{sym}&contractType=CALL&strikeCount=10&includeQuotes=TRUE&strategy=SINGLE&range=SBK&toDate=#{date}&fromDate=#{date}&optionType=S"
+      request_url = "https://api.tdameritrade.com/v1/marketdata/chains?apikey=#{ENV['TD_CONSUMER_KEY']}&symbol=#{sym}&contractType=CALL&strikeCount=12&includeQuotes=TRUE&strategy=SINGLE&range=SBK&toDate=#{date}&fromDate=#{date}&optionType=S"
 
       response = Curl::Easy.http_get(request_url) do |curl|
         curl.headers["Authorization"] = "Bearer #{auth_token}"
