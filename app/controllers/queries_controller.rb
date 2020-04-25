@@ -19,7 +19,7 @@ class QueriesController < ApplicationController
     sym.each { |s| new_set = new_set + [s] }
     new_set = new_set.flatten.uniq.sort
     unless existing == new_set
-      @query.update(symbols: new_set.split(","))
+      @query.update(symbols: new_set.join(","))
       @output = @query.get_data.sort
 
       respond_to do |format|
