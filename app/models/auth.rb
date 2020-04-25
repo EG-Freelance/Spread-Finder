@@ -1,6 +1,7 @@
 class Auth < ApplicationRecord
   def get_td_auth_token
     def driver_options
+      
       options = Selenium::WebDriver::Firefox::Options.new(binary: ENV['FIREFOX_BIN'])
       arguments = %w[--headless]
       arguments.each do |argument|
