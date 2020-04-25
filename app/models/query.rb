@@ -28,6 +28,7 @@ class Query < ApplicationRecord
     output = {}
 
     syms.each do |sym|
+      puts "getting data for #{sym}..."
       output[sym] = {}
       # make sure auth_token isn't about to expire
       auth = check_auth(auth)
