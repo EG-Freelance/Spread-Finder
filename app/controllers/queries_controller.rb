@@ -12,11 +12,14 @@ class QueriesController < ApplicationController
   end
 
   def add
-    sym = params['new_sym']["sym"].upcase
+    sym = params['new_sym']["sym"].split(/\,\s?/).map(&:upcase)
     @query = Query.first
-    unless @query.symbols.match(/(?:,|\A)#{sym}(?:,|\z)/)
-      new_sym = (!@query.symbols.blank? ? @query.symbols + ",#{sym}" : sym)
-      @query.update(symbols: new_sym)
+    existing = @query.symbols.split(",").sort
+    new_set = existing
+    sym.each { |s| new_set = new_set + [s] }
+    new_set = new_set.flatten.uniq.sort
+    unless existing == new_set
+      @query.update(symbols: new_set.split(","))
       @output = @query.get_data.sort
 
       respond_to do |format|
@@ -26,9 +29,10 @@ class QueriesController < ApplicationController
   end
 
   def remove
-    sym = params['sym']
+    sym = [params['sym']]
     @query = Query.first
-    @query.update(symbols: @query.symbols.gsub(/(?:,|\A)#{sym}(?:,|\z)/, ""))
+    new_set = (@query.symbols.split(",") - sym).join(",")
+    @query.update(symbols: new_set)
     @output = @query.get_data.sort
 
     respond_to do |format|
