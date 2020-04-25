@@ -1,6 +1,6 @@
 class Auth < ApplicationRecord
   def get_td_auth_token
-    def driver_options
+    def ff_driver_options
       options = Selenium::WebDriver::Firefox::Options.new(binary: ENV['FIREFOX_BIN'])
       arguments = %w[--headless]
       arguments.each do |argument|
@@ -9,18 +9,28 @@ class Auth < ApplicationRecord
       options
     end
 
+    def ff_setup_driver
+      service = Selenium::WebDriver::Service.firefox(path: Selenium::WebDriver::Firefox::Service.driver_path)
+      driver = Selenium::WebDriver.for :firefox, service: service, options: ff_driver_options
+      driver.manage.timeouts.implicit_wait = 5
+      driver.manage.timeouts.page_load = 5
+      driver.manage.timeouts.script_timeout = 5
+      driver
+    end
+
     def ch_driver_options
       options = Selenium::WebDriver::Chrome::Options.new(binary: ENV['GOOGLE_CHROME_BIN'])
-      # arguments = %w[--headless]
-      # arguments.each do |argument|
-      #   options.add_argument(argument)
-      # end
+      arguments = %w[--headless --disable-gpu --no-sandbox --remote-debugging-port=9222]
+      arguments.each do |argument|
+        options.add_argument(argument)
+      end
       options
     end
 
-    def setup_driver
-      service = Selenium::WebDriver::Service.firefox(path: Selenium::WebDriver::Firefox::Service.driver_path)
-      driver = Selenium::WebDriver.for :firefox, service: service, options: driver_options
+    def ch_setup_driver
+      Selenium::WebDriver::Chrome.path = ENV['GOOGLE_CHROME_BIN']
+      service = Selenium::WebDriver::Service.chrome(path: Selenium::WebDriver::Chrome::Service.driver_path)
+      driver = Selenium::WebDriver.for :chrome, service: service, options: ch_driver_options
       driver.manage.timeouts.implicit_wait = 5
       driver.manage.timeouts.page_load = 5
       driver.manage.timeouts.script_timeout = 5
@@ -28,7 +38,7 @@ class Auth < ApplicationRecord
     end
 
     puts "Authorizing via OAuth..."
-    driver = setup_driver
+    Rails.env == "production" ? driver = ch_setup_driver : ff_setup_driver
     driver.get("https://auth.tdameritrade.com/auth?response_type=code&redirect_uri=http://spread-finder.herokuapp.com&client_id=#{ENV['TD_CONSUMER_KEY']}%40AMER.OAUTHAP")
     usr = driver.find_element(id: "username")
     usr.send_keys ENV['TD_USR']
