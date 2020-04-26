@@ -2,7 +2,7 @@
 
 <% if user_signed_in? %>
   <%= form_for :new_sym, :remote => true, :url => add_sym_path, :html => { :class => "form-inline add-form" } do |f| %>
-    <%= f.text_field :sym, :class => "form-control add-field", :placeholder => "New Symbol" %>
+    <%= f.text_field :sym, :class => "form-control add-field", :placeholder => "New Symbol(s)" %>
     <%= f.submit "Add", :class => "btn btn-outline-success" %>
   <% end %>
 

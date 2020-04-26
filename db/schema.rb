@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_24_205645) do
+ActiveRecord::Schema.define(version: 2020_04_26_032340) do
 
   create_table "auths", force: :cascade do |t|
     t.text "auth_token"
@@ -23,6 +23,33 @@ ActiveRecord::Schema.define(version: 2020_04_24_205645) do
 
   create_table "queries", force: :cascade do |t|
     t.text "symbols"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "spreads", force: :cascade do |t|
+    t.string "sym"
+    t.string "year_week"
+    t.decimal "strike_5"
+    t.decimal "strike_4"
+    t.decimal "strike_3"
+    t.decimal "strike_2"
+    t.decimal "underlying"
+    t.decimal "five_three_val_m"
+    t.decimal "four_three_val_m"
+    t.decimal "three_two_val_m"
+    t.decimal "five_three_val_t"
+    t.decimal "four_three_val_t"
+    t.decimal "three_two_val_t"
+    t.decimal "five_three_val_w"
+    t.decimal "four_three_val_w"
+    t.decimal "three_two_val_w"
+    t.decimal "five_three_val_th"
+    t.decimal "four_three_val_th"
+    t.decimal "three_two_val_th"
+    t.decimal "five_three_val_f"
+    t.decimal "four_three_val_f"
+    t.decimal "three_two_val_f"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
