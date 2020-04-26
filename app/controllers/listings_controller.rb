@@ -1,26 +1,26 @@
-class QueriesController < ApplicationController
-  before_action :set_query, only: [:show, :edit, :update, :destroy]
+class ListingsController < ApplicationController
+  before_action :set_listing, only: [:show, :edit, :update, :destroy]
 
-  # GET /queries
-  # GET /queries.json
+  # GET /listings
+  # GET /listings.json
   def index
     if user_signed_in?
-      @query = Query.first
+      @listing = Listing.first
 
-      @output = @query.get_data.sort
+      @output = @listing.get_data.sort
     end
   end
 
   def add
     sym = params['new_sym']["sym"].split(/\,\s?/).map(&:upcase)
-    @query = Query.first
-    existing = @query.symbols.split(",").sort
+    @listing = Listing.first
+    existing = @listing.symbols.split(",").sort
     new_set = existing
     sym.each { |s| new_set = new_set + [s] }
     new_set = new_set.flatten.uniq.sort
     unless existing == new_set
-      @query.update(symbols: new_set.join(","))
-      @output = @query.get_data.sort
+      @listing.update(symbols: new_set.join(","))
+      @output = @listing.get_data.sort
 
       respond_to do |format|
         format.js { render 'update' }
@@ -30,77 +30,77 @@ class QueriesController < ApplicationController
 
   def remove
     sym = [params['sym']]
-    @query = Query.first
-    new_set = (@query.symbols.split(",") - sym).join(",")
-    @query.update(symbols: new_set)
-    @output = @query.get_data.sort
+    @listing = Listing.first
+    new_set = (@listing.symbols.split(",") - sym).join(",")
+    @listing.update(symbols: new_set)
+    @output = @listing.get_data.sort
 
     respond_to do |format|
       format.js { render 'update' }
     end
   end
-  # GET /queries/1
-  # GET /queries/1.json
+  # GET /listings/1
+  # GET /listings/1.json
   def show
   end
 
-  # GET /queries/new
+  # GET /listings/new
   def new
-    @query = Query.new
+    @listing = Listing.new
   end
 
-  # GET /queries/1/edit
+  # GET /listings/1/edit
   def edit
   end
 
-  # POST /queries
-  # POST /queries.json
+  # POST /listings
+  # POST /listings.json
   def create
-    @query = Query.new(query_params)
+    @listing = Listing.new(listing_params)
 
     respond_to do |format|
-      if @query.save
-        format.html { redirect_to @query, notice: 'Query was successfully created.' }
-        format.json { render :show, status: :created, location: @query }
+      if @listing.save
+        format.html { redirect_to @listing, notice: 'Listing was successfully created.' }
+        format.json { render :show, status: :created, location: @listing }
       else
         format.html { render :new }
-        format.json { render json: @query.errors, status: :unprocessable_entity }
+        format.json { render json: @listing.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /queries/1
-  # PATCH/PUT /queries/1.json
+  # PATCH/PUT /listings/1
+  # PATCH/PUT /listings/1.json
   def update
     respond_to do |format|
-      if @query.update(query_params)
-        format.html { redirect_to @query, notice: 'Query was successfully updated.' }
-        format.json { render :show, status: :ok, location: @query }
+      if @listing.update(listing_params)
+        format.html { redirect_to @listing, notice: 'Listing was successfully updated.' }
+        format.json { render :show, status: :ok, location: @listing }
       else
         format.html { render :edit }
-        format.json { render json: @query.errors, status: :unprocessable_entity }
+        format.json { render json: @listing.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /queries/1
-  # DELETE /queries/1.json
+  # DELETE /listings/1
+  # DELETE /listings/1.json
   def destroy
-    @query.destroy
+    @listing.destroy
     respond_to do |format|
-      format.html { redirect_to queries_url, notice: 'Query was successfully destroyed.' }
+      format.html { redirect_to listings_url, notice: 'Listing was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_query
-      @query = Query.find(params[:id])
+    def set_listing
+      @listing = Listing.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
-    def query_params
-      params.fetch(:query, {})
+    def listing_params
+      params.fetch(:listing, {})
     end
 end
