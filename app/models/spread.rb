@@ -77,8 +77,8 @@ class Spread < ApplicationRecord
           ask = data_set['ask']
           mid = (bid + ask) / 2.0
 
-          if !info["underlying"]
-            info["underlying"] = data['underlyingPrice']
+          if !info["mkt"]
+            info["mkt"] = data['underlyingPrice']
           end
 
           info[strike] = mid
@@ -88,7 +88,7 @@ class Spread < ApplicationRecord
         four_three_val = info[spread.strike_4] - info[spread.strike_3]
         three_two_val = info[spread.strike_3] - info[spread.strike_2]
 
-        spread.update("underlying_#{day}".to_sym => mkt, "five_three_val_#{day}".to_sym => five_three_val, "four_three_val_#{day}".to_sym => four_three_val, "three_two_val_#{day}".to_sym => three_two_val)
+        spread.update("underlying_#{day}".to_sym => info['mkt'], "five_three_val_#{day}".to_sym => five_three_val, "four_three_val_#{day}".to_sym => four_three_val, "three_two_val_#{day}".to_sym => three_two_val)
       end
     end
   end

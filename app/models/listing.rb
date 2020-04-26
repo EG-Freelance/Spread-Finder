@@ -18,7 +18,7 @@ class Listing < ApplicationRecord
       if data["status"] == "FAILED"
         # return 0s if sym doesn't exist
         output[sym] = {
-          'mkt' => { 'strikes' => "0 - 0", 'lower_mid' => 0, 'upper_mid' => 0, 'diff_pct' => 0}, 
+          'mkt' => 0, 
           'five-three' => { 'strikes' => "0 - 0", 'lower_mid' => 0, 'upper_mid' => 0, 'diff_pct' => 0 },
           'four-three' => { 'strikes' => "0 - 0" , 'lower_mid' => 0, 'upper_mid' => 0, 'diff_pct' => 0},
           'three-two' => { 'strikes' => "0 - 0", 'lower_mid' => 0, 'upper_mid' => 0, 'diff_pct' => 0 }
