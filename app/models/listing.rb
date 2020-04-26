@@ -15,31 +15,36 @@ class Listing < ApplicationRecord
 
       data = JSON.parse(response.body)
 
-      # set market price for comparison
-      mkt = data['underlyingPrice']
-      output[sym]['mkt'] = mkt
+      if data["status"] == "FAILED"
+        # return 0s if sym doesn't exist
+        output[sym] = {'mkt' => 0, 'five-three' => 0, 'four-three' => 0, 'three-two' => 0 }
+      else
+        # set market price for comparison
+        mkt = data['underlyingPrice']
+        output[sym]['mkt'] = mkt
 
-      # remove any unnecessary data
-      co = data['callExpDateMap'].first[1].filter { |k,v| k.to_f <= mkt }
+        # remove any unnecessary data
+        co = data['callExpDateMap'].first[1].filter { |k,v| k.to_f <= mkt }
 
-      strikes = co.keys.sort
+        strikes = co.keys.sort
 
-      five_bid = co[strikes[-5]][0]['bid']
-      five_ask = co[strikes[-5]][0]['ask']
-      five_mid = (five_bid + five_ask) / 2.0
-      four_bid = co[strikes[-4]][0]['bid']
-      four_ask = co[strikes[-4]][0]['ask']
-      four_mid = (four_bid + four_ask) / 2.0
-      three_bid = co[strikes[-3]][0]['bid']
-      three_ask = co[strikes[-3]][0]['ask']
-      three_mid = (three_bid + three_ask) / 2.0
-      two_bid = co[strikes[-2]][0]['bid']
-      two_ask = co[strikes[-2]][0]['ask']
-      two_mid = (two_bid + two_ask) / 2.0
+        five_bid = co[strikes[-5]][0]['bid']
+        five_ask = co[strikes[-5]][0]['ask']
+        five_mid = (five_bid + five_ask) / 2.0
+        four_bid = co[strikes[-4]][0]['bid']
+        four_ask = co[strikes[-4]][0]['ask']
+        four_mid = (four_bid + four_ask) / 2.0
+        three_bid = co[strikes[-3]][0]['bid']
+        three_ask = co[strikes[-3]][0]['ask']
+        three_mid = (three_bid + three_ask) / 2.0
+        two_bid = co[strikes[-2]][0]['bid']
+        two_ask = co[strikes[-2]][0]['ask']
+        two_mid = (two_bid + two_ask) / 2.0
 
-      output[sym]['five-three'] = {'strikes' => "#{strikes[-5]} - #{strikes[-3]}", 'lower_mid' => five_mid, 'upper_mid' => three_mid, 'diff_pct' => (five_mid - three_mid)/(strikes[-3].to_f - strikes[-5].to_f) }
-      output[sym]['four-three'] = {'strikes' => "#{strikes[-4]} - #{strikes[-3]}", 'lower_mid' => four_mid, 'upper_mid' => three_mid, 'diff_pct' => (four_mid - three_mid)/(strikes[-3].to_f - strikes[-4].to_f) }
-      output[sym]['three-two'] = {'strikes' => "#{strikes[-3]} - #{strikes[-2]}", 'lower_mid' => three_mid, 'upper_mid' => two_mid, 'diff_pct' => (three_mid - two_mid)/(strikes[-2].to_f - strikes[-3].to_f) }
+        output[sym]['five-three'] = {'strikes' => "#{strikes[-5]} - #{strikes[-3]}", 'lower_mid' => five_mid, 'upper_mid' => three_mid, 'diff_pct' => (five_mid - three_mid)/(strikes[-3].to_f - strikes[-5].to_f) }
+        output[sym]['four-three'] = {'strikes' => "#{strikes[-4]} - #{strikes[-3]}", 'lower_mid' => four_mid, 'upper_mid' => three_mid, 'diff_pct' => (four_mid - three_mid)/(strikes[-3].to_f - strikes[-4].to_f) }
+        output[sym]['three-two'] = {'strikes' => "#{strikes[-3]} - #{strikes[-2]}", 'lower_mid' => three_mid, 'upper_mid' => two_mid, 'diff_pct' => (three_mid - two_mid)/(strikes[-2].to_f - strikes[-3].to_f) }
+      end
     end
 
     return output

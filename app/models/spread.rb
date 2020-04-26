@@ -30,6 +30,10 @@ class Spread < ApplicationRecord
         response = DataConcern.get_info(sym, auth.auth_token)
         data = JSON.parse(response.body)
 
+        # skip if sym doesn't exist
+        if data['status'] == "FAILED"
+          next
+        end
         mkt = data['underlyingPrice']
 
         # remove any unnecessary data
@@ -61,6 +65,11 @@ class Spread < ApplicationRecord
         [spread.strike_5, spread.strike_4, spread.strike_3, spread.strike_2].each do |strike|
           response = DataConcern.get_info(sym, auth.auth_token, strike)
           data = JSON.parse(response.body)
+
+          # skip if sym doesn't exist
+          if data['status'] == "FAILED"
+            next
+          end
 
           data_set = data['callExpDateMap'].first[1].first[1][0]
 
