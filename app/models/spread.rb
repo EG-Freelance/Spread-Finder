@@ -1,6 +1,8 @@
 class Spread < ApplicationRecord
+  include DataConcern
+
   def self.daily_pull
-    syms = Query.first.symbols.split(",")
+    syms = Listing.first.symbols.split(",")
     today = Date.today
     auth = Auth.first
     year_week = today.strftime("%G-%V")

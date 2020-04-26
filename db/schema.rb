@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_26_032340) do
+ActiveRecord::Schema.define(version: 2020_04_26_180452) do
 
   create_table "auths", force: :cascade do |t|
     t.text "auth_token"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2020_04_26_032340) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "queries", force: :cascade do |t|
+  create_table "listings", force: :cascade do |t|
     t.text "symbols"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

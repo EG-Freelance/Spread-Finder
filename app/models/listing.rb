@@ -1,4 +1,4 @@
-class Query < ApplicationRecord
+class Listing < ApplicationRecord
   include DataConcern
 
   def get_data
