@@ -54,7 +54,7 @@ class Spread < ApplicationRecord
         four_three_val = four_mid - three_mid
         three_two_val = three_mid - two_mid
 
-        spread = Spread.create(sym: sym, year_week: year_week, "underlying_#{day}".to_sym => mkt, strike_5: strikes[-5], strike_4: strikes[-4], strikes_3: strikes[-3], strikes_2: strikes[-2], "five_three_val_#{day}".to_sym => five_three_val, "four_three_val_#{day}".to_sym => four_three_val, "three_two_val_#{day}".to_sym => three_two_val)
+        spread = Spread.create(sym: sym, year_week: year_week, "underlying_#{day}".to_sym => mkt, strike_5: strikes[-5], strike_4: strikes[-4], strike_3: strikes[-3], strike_2: strikes[-2], "five_three_val_#{day}".to_sym => five_three_val, "four_three_val_#{day}".to_sym => four_three_val, "three_two_val_#{day}".to_sym => three_two_val)
       else
         info = {}
         # if this is an existing object, just update by strike prices to be sure that the range hasn't changed
