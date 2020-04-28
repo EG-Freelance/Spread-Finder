@@ -1,0 +1,33 @@
+<th class="data-row-<%= @sym %>" scope="row"><%= "#{@sym} (#{number_with_precision(@data['mkt'], :precision => 2)})" %></th>
+<td class="data-row data-row-<%= @sym %>">
+  <% @data.except('mkt').each do |k, v| %>
+    <b><%= v['strikes'] %></b><br>
+  <% end %>
+</td>
+<td class="data-row data-row-<%= @sym %>">
+  <% @data.except('mkt').each do |k, v| %>
+    <b><%= number_with_precision(v['lower_mid'], :precision => 2) %></b><br>
+  <% end %>
+</td>
+<td class="data-row data-row-<%= @sym %>">
+  <% @data.except('mkt').each do |k, v| %>
+    <b><%= number_with_precision(v['upper_mid'], :precision => 2) %></b><br>
+  <% end %>
+</td>
+<td class="data-row data-row-<%= @sym %>">
+  <% @data.except('mkt').each do |k, v| %>
+    <b><%= number_to_percentage(v['diff_pct'] * 100, :precision => 1) %></b><br>
+  <% end %>
+</td>
+<td><%= link_to 'Remove', remove_sym_path(@sym), :class => "btn btn-outline-danger", :remote => true %>
+</td>
+
+<script>
+  $(document).ready(function(){
+    // set rows to update when clicked
+    $('.data-row-<%= @sym %>').click(function(){
+      // var sym = $(this).parent().attr('id');
+      $('#trigger-data-<%= @sym %>')[0].click();
+    })
+  });
+</script>

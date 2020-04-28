@@ -7,7 +7,8 @@ class ListingsController < ApplicationController
     if user_signed_in?
       @listing = Listing.first
 
-      @output = @listing.get_data.sort
+      @syms = @listing.symbols.split(",")
+      # @output = @listing.get_data.sort
     end
   end
 
@@ -80,6 +81,15 @@ class ListingsController < ApplicationController
         format.html { render :edit }
         format.json { render json: @listing.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def update_data
+    @sym = params['sym']
+    @data = Listing.first.get_data_individ(@sym)
+
+    respond_to do |format|
+      format.js { render 'update_data' }
     end
   end
 

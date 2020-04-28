@@ -10,32 +10,15 @@
     </tr>
   </thead>
   <tbody>
-    <% @output.each do |sym, v| %>
-      <tr>
-        <th scope="row"><%= "#{sym} (#{number_with_precision(v['mkt'], :precision => 2)})" %></th>
-        <td>
-          <% v.except('mkt').each do |k, vv| %>
-            <b><%= vv['strikes'] %></b><br>
-          <% end %>
-        </td>
-        <td>
-          <% v.except('mkt').each do |k, vv| %>
-            <b><%= number_with_precision(vv['lower_mid'], :precision => 2) %></b><br>
-          <% end %>
-        </td>
-        <td>
-          <% v.except('mkt').each do |k, vv| %>
-            <b><%= number_with_precision(vv['upper_mid'], :precision => 2) %></b><br>
-          <% end %>
-        </td>
-        <td>
-          <% v.except('mkt').each do |k, vv| %>
-            <b><%= number_to_percentage(vv['diff_pct'] * 100, :precision => 1) %></b><br>
-          <% end %>
-        </td>
-        <td><%= link_to 'Remove', remove_sym_path(sym), :class => "btn btn-outline-danger", :remote => true %>
-        </td>
+    <% @syms.each do |sym| %>
+      <tr id="data-<%= sym %>">
+        <%= render 'listings/loading_data', sym: sym %>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<!-- hidden data triggers -->
+<div id="hidden-data-trigger" hidden="true">
+  <%= render 'listings/hidden_data_triggers', syms: @syms %>
+</div>

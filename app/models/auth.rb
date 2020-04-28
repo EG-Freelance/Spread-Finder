@@ -38,7 +38,7 @@ class Auth < ApplicationRecord
     end
 
     puts "Authorizing via OAuth..."
-    Rails.env == "production" ? driver = ch_setup_driver : ff_setup_driver
+    Rails.env == "production" ? driver = ch_setup_driver : driver = ff_setup_driver
     driver.get("https://auth.tdameritrade.com/auth?response_type=code&redirect_uri=http://spread-finder.herokuapp.com&client_id=#{ENV['TD_CONSUMER_KEY']}%40AMER.OAUTHAP")
     usr = driver.find_element(id: "username")
     usr.send_keys ENV['TD_USR']
@@ -91,7 +91,7 @@ class Auth < ApplicationRecord
       # code = URI.decode(code[1])
       code = code_match[1]
     else
-      puts "Con't wasn't properly extracted"
+      puts "Code wasn't properly extracted"
       return false
     end
 
