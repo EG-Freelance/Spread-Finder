@@ -23,7 +23,7 @@ class Listing < ApplicationRecord
         # remove any unnecessary data
         co = data['callExpDateMap'].first[1].filter { |k,v| k.to_f <= mkt }
 
-        strikes = co.keys.sort
+        strikes = co.keys.sort_by { |k| k.to _i }
 
         five_bid = co[strikes[-5]][0]['bid']
         five_ask = co[strikes[-5]][0]['ask']
