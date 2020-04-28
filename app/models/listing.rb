@@ -15,15 +15,7 @@ class Listing < ApplicationRecord
 
       data = JSON.parse(response.body)
 
-      if data["status"] == "FAILED"
-        # return 0s if sym doesn't exist
-        output[sym] = {
-          'mkt' => 0, 
-          'five-three' => { 'strikes' => "0 - 0", 'lower_mid' => 0, 'upper_mid' => 0, 'diff_pct' => 0 },
-          'four-three' => { 'strikes' => "0 - 0" , 'lower_mid' => 0, 'upper_mid' => 0, 'diff_pct' => 0},
-          'three-two' => { 'strikes' => "0 - 0", 'lower_mid' => 0, 'upper_mid' => 0, 'diff_pct' => 0 }
-        }
-      else
+      begin
         # set market price for comparison
         mkt = data['underlyingPrice']
         output[sym]['mkt'] = mkt
@@ -49,7 +41,16 @@ class Listing < ApplicationRecord
         output[sym]['five-three'] = {'strikes' => "#{strikes[-5]} - #{strikes[-3]}", 'lower_mid' => five_mid, 'upper_mid' => three_mid, 'diff_pct' => (five_mid - three_mid)/(strikes[-3].to_f - strikes[-5].to_f) }
         output[sym]['four-three'] = {'strikes' => "#{strikes[-4]} - #{strikes[-3]}", 'lower_mid' => four_mid, 'upper_mid' => three_mid, 'diff_pct' => (four_mid - three_mid)/(strikes[-3].to_f - strikes[-4].to_f) }
         output[sym]['three-two'] = {'strikes' => "#{strikes[-3]} - #{strikes[-2]}", 'lower_mid' => three_mid, 'upper_mid' => two_mid, 'diff_pct' => (three_mid - two_mid)/(strikes[-2].to_f - strikes[-3].to_f) }
-      end
+      rescue
+        error_out = {
+          'mkt' => 0, 
+          'five-three' => { 'strikes' => "0 - 0", 'lower_mid' => 0, 'upper_mid' => 0, 'diff_pct' => 0 },
+          'four-three' => { 'strikes' => "0 - 0" , 'lower_mid' => 0, 'upper_mid' => 0, 'diff_pct' => 0},
+          'three-two' => { 'strikes' => "0 - 0", 'lower_mid' => 0, 'upper_mid' => 0, 'diff_pct' => 0 }
+        }
+        puts "Something went wrong with the data for #{sym}"
+        output[sym] = error_out
+      end        
     end
 
     return output
