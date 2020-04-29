@@ -1,1 +1,4 @@
-$('#data-table').html("<%= j render('listings/data_table') %>");
+<% @syms.each do |sym| %>
+  $("#listing-table > tbody:last-child").append("<tr id='data-<%= sym.gsub(/\//,'_') %>'><%= j render 'listings/loading_data', sym: sym %></tr>");
+  $("#hidden-data-trigger").append("<%= j render 'listings/hidden_data_triggers', sym: sym %>")
+<% end %>

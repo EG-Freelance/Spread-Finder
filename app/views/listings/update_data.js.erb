@@ -1,1 +1,1 @@
-$("#data-<%= @sym %>").html("<%= j render('listings/async_data') %>")
+$("#data-<%= @sym.gsub(/\//,'_') %>").html("<%= j render('listings/async_data') %>")

@@ -13,15 +13,14 @@ class ListingsController < ApplicationController
   end
 
   def add
-    sym = params['new_sym']["sym"].split(/\,\s?/).map(&:upcase)
+    @syms = params['new_sym']["sym"].split(/\,\s?/).map(&:upcase)
     @listing = Listing.first
     existing = @listing.symbols.split(",").sort
     new_set = existing
-    sym.each { |s| new_set = new_set + [s] }
+    @syms.each { |s| new_set = new_set + [s] }
     new_set = new_set.flatten.uniq.sort
     unless existing == new_set
       @listing.update(symbols: new_set.join(","))
-      @output = @listing.get_data.sort
 
       respond_to do |format|
         format.js { render 'update' }
@@ -30,14 +29,13 @@ class ListingsController < ApplicationController
   end
 
   def remove
-    sym = [params['sym']]
+    @sym = [params['sym']]
     @listing = Listing.first
-    new_set = (@listing.symbols.split(",") - sym).join(",")
+    new_set = (@listing.symbols.split(",") - @sym).join(",")
     @listing.update(symbols: new_set)
-    @output = @listing.get_data.sort
 
     respond_to do |format|
-      format.js { render 'update' }
+      format.js { render 'remove' }
     end
   end
   # GET /listings/1

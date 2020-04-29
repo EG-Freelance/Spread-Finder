@@ -1,3 +1,1 @@
-<% @syms.each do |sym| %>
-  <%= link_to sym, update_data_path(sym), :remote => true, :method => :patch, :id => "trigger-data-#{sym}", :class => "hidden-data-trigger" %>
-<% end %>
+<%= link_to sym, update_data_path(sym), :remote => true, :method => :patch, :id => "trigger-data-#{sym.gsub(/\//,'_')}", :class => "hidden-data-trigger" %>

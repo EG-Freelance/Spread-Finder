@@ -8,6 +8,6 @@
 
 <script>
   $(document).ready(function(){
-    $('#trigger-data-<%= sym %>')[0].click();
+    $("#trigger-data-<%= sym.gsub(/\//,'_') %>")[0].click();
   });
 </script>

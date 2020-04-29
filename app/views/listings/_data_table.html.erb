@@ -1,4 +1,4 @@
-<table class="table table-hover table-dark">
+<table class="table table-hover table-dark" id="listing-table">
   <thead>
     <tr>
       <th scope="col">Sym</th>
@@ -11,7 +11,7 @@
   </thead>
   <tbody>
     <% @syms.each do |sym| %>
-      <tr id="data-<%= sym %>">
+      <tr id="data-<%= sym.gsub(/\//, '_') %>">
         <%= render 'listings/loading_data', sym: sym %>
       </tr>
     <% end %>
@@ -19,6 +19,8 @@
 </table>
 
 <!-- hidden data triggers -->
-<div id="hidden-data-trigger" hidden="true">
-  <%= render 'listings/hidden_data_triggers', syms: @syms %>
+<div id="hidden-data-trigger" hidden>
+  <% @syms.each do |sym| %>
+    <%= render 'listings/hidden_data_triggers', sym: sym %>
+  <% end %>
 </div>

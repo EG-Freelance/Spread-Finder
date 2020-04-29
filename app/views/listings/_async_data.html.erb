@@ -1,4 +1,4 @@
-<th class="data-row-<%= @sym %>" scope="row"><%= "#{@sym} (#{number_with_precision(@data['mkt'], :precision => 2)})" %></th>
+<th class="data-row data-row-<%= @sym.gsub(/\//,'_') %>" scope="row"><%= "#{@sym} (#{number_with_precision(@data['mkt'], :precision => 2)})" %></th>
 <td class="data-row data-row-<%= @sym %>">
   <% @data.except('mkt').each do |k, v| %>
     <b><%= v['strikes'] %></b><br>
@@ -25,9 +25,8 @@
 <script>
   $(document).ready(function(){
     // set rows to update when clicked
-    $('.data-row-<%= @sym %>').click(function(){
-      // var sym = $(this).parent().attr('id');
-      $('#trigger-data-<%= @sym %>')[0].click();
+    $(".data-row-<%= @sym.gsub(/\//,'_') %>").click(function(){
+      $("#trigger-data-<%= @sym.gsub(/\//,'_') %>")[0].click();
     })
   });
 </script>
