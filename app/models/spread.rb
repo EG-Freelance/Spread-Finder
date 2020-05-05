@@ -34,38 +34,43 @@ class Spread < ApplicationRecord
       mkt = close_hash[sym]["closePrice"]
 
       if !spread
-        # if this is a new object, get all of the information
-        response = DataConcern.get_info(sym, auth.auth_token)
-        data = JSON.parse(response.body)
+        begin
+          # if this is a new object, get all of the information
+          response = DataConcern.get_info(sym, auth.auth_token)
+          data = JSON.parse(response.body)
 
-        # skip if sym doesn't exist
-        if data['status'] == "FAILED"
+          # skip if sym doesn't exist
+          if data['status'] == "FAILED"
+            next
+          end
+
+          # remove any unnecessary data
+          co = data['callExpDateMap'].first[1].filter { |k,v| k.to_f <= mkt }
+
+          strikes = co.keys.sort_by { |k| k.to_i }
+
+          five_bid = co[strikes[-5]][0]['bid']
+          five_ask = co[strikes[-5]][0]['ask']
+          five_mid = (five_bid + five_ask) / 2.0
+          four_bid = co[strikes[-4]][0]['bid']
+          four_ask = co[strikes[-4]][0]['ask']
+          four_mid = (four_bid + four_ask) / 2.0
+          three_bid = co[strikes[-3]][0]['bid']
+          three_ask = co[strikes[-3]][0]['ask']
+          three_mid = (three_bid + three_ask) / 2.0
+          two_bid = co[strikes[-2]][0]['bid']
+          two_ask = co[strikes[-2]][0]['ask']
+          two_mid = (two_bid + two_ask) / 2.0
+
+          five_three_val = five_mid - three_mid
+          four_three_val = four_mid - three_mid
+          three_two_val = three_mid - two_mid
+
+          spread = Spread.create(sym: sym, year_week: year_week, "underlying_#{day}".to_sym => mkt, strike_5: strikes[-5], strike_4: strikes[-4], strike_3: strikes[-3], strike_2: strikes[-2], "five_three_val_#{day}".to_sym => five_three_val, "four_three_val_#{day}".to_sym => four_three_val, "three_two_val_#{day}".to_sym => three_two_val)
+        rescue
+          # if there is an error in the collection, just move on to the next
           next
         end
-
-        # remove any unnecessary data
-        co = data['callExpDateMap'].first[1].filter { |k,v| k.to_f <= mkt }
-
-        strikes = co.keys.sort_by { |k| k.to_i }
-
-        five_bid = co[strikes[-5]][0]['bid']
-        five_ask = co[strikes[-5]][0]['ask']
-        five_mid = (five_bid + five_ask) / 2.0
-        four_bid = co[strikes[-4]][0]['bid']
-        four_ask = co[strikes[-4]][0]['ask']
-        four_mid = (four_bid + four_ask) / 2.0
-        three_bid = co[strikes[-3]][0]['bid']
-        three_ask = co[strikes[-3]][0]['ask']
-        three_mid = (three_bid + three_ask) / 2.0
-        two_bid = co[strikes[-2]][0]['bid']
-        two_ask = co[strikes[-2]][0]['ask']
-        two_mid = (two_bid + two_ask) / 2.0
-
-        five_three_val = five_mid - three_mid
-        four_three_val = four_mid - three_mid
-        three_two_val = three_mid - two_mid
-
-        spread = Spread.create(sym: sym, year_week: year_week, "underlying_#{day}".to_sym => mkt, strike_5: strikes[-5], strike_4: strikes[-4], strike_3: strikes[-3], strike_2: strikes[-2], "five_three_val_#{day}".to_sym => five_three_val, "four_three_val_#{day}".to_sym => four_three_val, "three_two_val_#{day}".to_sym => three_two_val)
       else
         info = {}
 
