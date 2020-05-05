@@ -21,4 +21,14 @@ module DataConcern
 
     return auth
   end
+
+  def self.get_close(syms, auth_token)
+    request_url = "https://api.tdameritrade.com/v1/marketdata/quotes?apikey=#{ENV['TD_CONSUMER_KEY']}&symbol=#{syms}"
+
+    response = Curl::Easy.http_get(request_url) do |curl|
+      curl.headers["Authorization"] = "Bearer #{auth_token}"
+    end
+
+    return response
+  end
 end
