@@ -5,9 +5,9 @@ class Spread < ApplicationRecord
     # set sym array
     syms = Listing.first.symbols
     # set date needs
-    today = Date.today.in_time_zone("Eastern Time (US & Canada)")
+    today = DateTime.now.in_time_zone("Eastern Time (US & Canada)")
     year_week = today.strftime("%G-%V")
-    case Date.today.strftime("%A")
+    case DateTime.now.strftime("%A")
     when "Monday"
       day = "m"
     when "Tuesday"
