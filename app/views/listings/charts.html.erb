@@ -1,0 +1,140 @@
+<%= content_tag(:div, "", 'data-spread-values' => @spreads, :hidden => true, :id => "chart-data") %>
+
+<div id="sym-sel">
+  <%= select_tag "symbol", options_for_select(JSON.parse(@spreads).collect { |s| s['sym'] }.uniq.sort), :class => "form-control chart-selectors" %>
+</div>
+
+<div id="yw-sel">
+  <%= select_tag "year_week", options_for_select(JSON.parse(@spreads).select { |s| s['sym'] == JSON.parse(@spreads).first['sym'] }.map { |s| [s['year_week'][0..3] + " - Week " + s['year_week'][-2..-1], s['year_week']] }.uniq.sort), :class => "form-control chart-selectors" %>
+</div>
+
+<canvas id="chart"></canvas>
+
+<script>
+  function getData(){
+    var sym = $('#symbol')[0].value
+    var yw = $('#year_week')[0].value
+    var dataSet = $('#chart-data').data()['spreadValues'].filter(function(e){
+      return e["sym"] == sym && e["year_week"] == yw
+    })[0];
+
+    return dataSet;
+  }
+
+  function fillYw(){
+    var parentNode = $('#year_week')[0]
+    var currYw = parentNode.value;
+    var sym = $('#symbol')[0].value;
+    var rmCurr = true;
+    var currYwNode;
+
+    // Remove all entries that aren't the current selected entry
+    Array.from(parentNode.children).forEach(function(e){
+      if(e.value != currYw){
+        e.remove();
+      }else{
+        currYwNode = e;
+      }
+    });
+
+    // Fill in the rest of the entries around the current existing one
+    //// Get data related to current sym
+    var relData = $('#chart-data').data()['spreadValues'].filter(function(e){
+      return e["sym"] == sym
+    });
+
+    //// Get YWs associated with current sym
+    var yws = relData.map(function(e){
+      return e["year_week"];
+    });
+
+    //// For each YW, add an option
+    yws.forEach(function(e){
+      var op = document.createElement('option');
+      op.value = e;
+      op.text = e.slice(0,4) + " - Week " + e.slice(-2);
+      if(currYw > e){
+        currYwNode.insertAdjacentElement('beforebegin', op);
+      }else if(currYw == e){
+        rmCurr = false;
+      }else{
+        parentNode.append(op);
+      }
+    });
+
+    //// remove current if it doesn't exist for new sym
+    if(rmCurr){
+      currYwNode.remove();
+    }
+  }
+
+  function drawChart(){
+    var dataSet = getData();
+
+    var ctx = document.getElementById('chart');
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["M", "T", "W", "TH", "F"],
+        datasets: [{
+          yAxisID: 'options',
+          label: '5-3',
+          data: [dataSet['five_three_val_m'], dataSet['five_three_val_t'], dataSet['five_three_val_w'], dataSet['five_three_val_th'], dataSet['five_three_val_f']],
+          backgroundColor: 'rgba(255,0,0,0.1)',
+          borderColor: 'rgba(255,0,0,0.5)'
+        },{
+          yAxisID: 'options',
+          label: '4-3',
+          data: [dataSet['four_three_val_m'], dataSet['four_three_val_t'], dataSet['four_three_val_w'], dataSet['four_three_val_th'], dataSet['four_three_val_f']],
+          backgroundColor: 'rgba(0,255,0,0.1)',
+          borderColor: 'rgba(0,255,0,0.5)'
+        },{
+          yAxisID: 'options',
+          label: '3-2',
+          data: [dataSet['three_two_val_m'], dataSet['three_two_val_t'], dataSet['three_two_val_w'], dataSet['three_two_val_th'], dataSet['three_two_val_f']],
+          backgroundColor: 'rgba(0,0,255,0.1)',
+          borderColor: 'rgba(0,0,255,0.5)'
+        },{
+          yAxisID: 'equities',
+          label: 'Equity',
+          data: [dataSet['underlying_m'], dataSet['underlying_t'], dataSet['underlying_w'], dataSet['underlying_th'], dataSet['underlying_f']],
+          backgroundColor: 'rgba(0,0,0,0.1)',
+          borderColor: 'rgba(0,0,0,0.5)'
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            id: 'options',
+            type: 'linear',
+            position: 'left',
+            ticks: {
+              min: 0
+            }
+          },
+          {
+            id: 'equities',
+            type: 'linear',
+            position: 'right',
+            ticks: {
+              min: 0
+            }
+          }]
+        }
+      }
+    });    
+  }
+
+  $(document).ready(function(){
+    drawChart();
+
+    $('#symbol').change(function(){
+      fillYw();
+      drawChart();
+    });
+
+    $('#year_week').change(function(){
+      drawChart();
+    });
+  })
+</script>

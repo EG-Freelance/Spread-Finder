@@ -38,6 +38,10 @@ class ListingsController < ApplicationController
       format.js { render 'remove' }
     end
   end
+
+  def charts
+    @spreads = Spread.all.to_json
+  end
   # GET /listings/1
   # GET /listings/1.json
   def show
