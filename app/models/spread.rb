@@ -7,7 +7,7 @@ class Spread < ApplicationRecord
     # set date needs
     today = DateTime.now.in_time_zone("Eastern Time (US & Canada)")
     year_week = today.strftime("%G-%V")
-    case DateTime.now.strftime("%A")
+    case today.strftime("%A")
     when "Monday"
       day = "m"
     when "Tuesday"
@@ -66,7 +66,7 @@ class Spread < ApplicationRecord
           four_three_val = four_mid - three_mid
           three_two_val = three_mid - two_mid
 
-          spread = Spread.create(sym: sym, year_week: year_week, "underlying_#{day}".to_sym => mkt, strike_5: strikes[-5], strike_4: strikes[-4], strike_3: strikes[-3], strike_2: strikes[-2], "five_three_val_#{day}".to_sym => five_three_val, "four_three_val_#{day}".to_sym => four_three_val, "three_two_val_#{day}".to_sym => three_two_val)
+          spread = Spread.create(sym: sym.gsub(".", "/"), year_week: year_week, "underlying_#{day}".to_sym => mkt, strike_5: strikes[-5], strike_4: strikes[-4], strike_3: strikes[-3], strike_2: strikes[-2], "five_three_val_#{day}".to_sym => five_three_val, "four_three_val_#{day}".to_sym => four_three_val, "three_two_val_#{day}".to_sym => three_two_val)
         rescue
           # if there is an error in the collection, just move on to the next
           next
