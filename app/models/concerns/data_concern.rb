@@ -3,7 +3,7 @@ module DataConcern
 
   def self.get_info(sym, auth_token, strike = "")
     date = Date.parse("Friday")
-    Date.today >= date ? date = (date + 7.days).strftime("%Y-%m-%d") : date = date.strftime("%Y-%m-%d")
+    DateTime.now.in_time_zone("Eastern Time (US & Canada)").to_date > date ? date = (date + 7.days).strftime("%Y-%m-%d") : date = date.strftime("%Y-%m-%d")
     request_url = "https://api.tdameritrade.com/v1/marketdata/chains?apikey=#{ENV['TD_CONSUMER_KEY']}&symbol=#{sym}&contractType=CALL&strikeCount=#{strike.blank? ? 12 : ""}&includeQuotes=TRUE&strategy=SINGLE&range=#{strike.blank? ? 'SBK' : ''}&toDate=#{date}&fromDate=#{date}&optionType=S&strike=#{strike}"
 
     response = Curl::Easy.http_get(request_url) do |curl|

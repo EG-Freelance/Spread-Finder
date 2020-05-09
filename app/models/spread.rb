@@ -82,6 +82,7 @@ class Spread < ApplicationRecord
 
           # skip if sym doesn't exist
           if data['status'] == "FAILED"
+            info[strike] = 0
             next
           end
 
