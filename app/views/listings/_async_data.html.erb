@@ -4,22 +4,22 @@
   </i>
 </th>
 <td class="data-row data-row-<%= @sym %>">
-  <% @data.except('mkt').each do |k, v| %>
+  <% @data.except('mkt', 'low', 'high').each do |k, v| %>
     <b><%= v['strikes'] %></b><br>
   <% end %>
 </td>
 <td class="data-row data-row-<%= @sym %>">
-  <% @data.except('mkt').each do |k, v| %>
+  <% @data.except('mkt', 'low', 'high').each do |k, v| %>
     <b><%= number_with_precision(v['lower_mid'], :precision => 2) %></b><br>
   <% end %>
 </td>
 <td class="data-row data-row-<%= @sym %>">
-  <% @data.except('mkt').each do |k, v| %>
+  <% @data.except('mkt', 'low', 'high').each do |k, v| %>
     <b><%= number_with_precision(v['upper_mid'], :precision => 2) %></b><br>
   <% end %>
 </td>
 <td class="data-row data-row-<%= @sym %>">
-  <% @data.except('mkt').each do |k, v| %>
+  <% @data.except('mkt', 'low', 'high').each do |k, v| %>
     <b><%= number_to_percentage(v['diff_pct'] * 100, :precision => 1) %></b><br>
   <% end %>
 </td>
