@@ -1,4 +1,4 @@
-<th class="data-row data-row-<%= @sym.gsub(/\//,'_') %>" scope="row"><%= "#{@sym} (#{number_with_precision(@data['mkt'], :precision => 2)})" %><br>
+<th class="data-row data-row-<%= @sym.gsub(/\//,'_') %>" scope="row"><span class='sym-header'><%= "#{@sym} (#{number_with_precision(@data['mkt'], :precision => 2)})" %></span><br>
   <i style='font-weight: normal'>Last Month Range:<br>
     <%= number_with_precision(@data['low'], :precision => 2) %> - <%= number_with_precision(@data['high'], :precision => 2) %>
   </i>
