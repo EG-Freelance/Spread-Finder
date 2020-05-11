@@ -1,4 +1,8 @@
-<th class="data-row data-row-<%= @sym.gsub(/\//,'_') %>" scope="row"><%= "#{@sym} (#{number_with_precision(@data['mkt'], :precision => 2)})" %></th>
+<th class="data-row data-row-<%= @sym.gsub(/\//,'_') %>" scope="row"><%= "#{@sym} (#{number_with_precision(@data['mkt'], :precision => 2)})" %><br>
+  <i style='font-weight: normal'>Last Month Range:<br>
+    <%= number_with_precision(@data['low'], :precision => 2) %> - <%= number_with_precision(@data['high'], :precision => 2) %>
+  </i>
+</th>
 <td class="data-row data-row-<%= @sym %>">
   <% @data.except('mkt').each do |k, v| %>
     <b><%= v['strikes'] %></b><br>

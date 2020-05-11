@@ -11,11 +11,17 @@ class Listing < ApplicationRecord
       output[sym] = {}
       # make sure auth_token isn't about to expire
       auth = DataConcern.check_auth(auth)
+      
       response = DataConcern.get_info(sym, auth.auth_token)
-
       data = JSON.parse(response.body)
 
+      response2 = DataConcern.get_month_ohlc(sym, auth.auth_token)
+      ohlc = JSON.parse(response2.body)
+
       begin
+        # set month high and low
+        output[sym]['high'] = ohlc['candles'].map { |c| c['high'] }.max
+        output[sym]['low'] = ohlc['candles'].map { |c| c['low'] }.min
         # set market price for comparison
         mkt = data['underlyingPrice']
         output[sym]['mkt'] = mkt
@@ -63,11 +69,17 @@ class Listing < ApplicationRecord
     puts "getting data for #{sym}..."
     # make sure auth_token isn't about to expire
     auth = DataConcern.check_auth(auth)
+    
     response = DataConcern.get_info(sym, auth.auth_token)
-
     data = JSON.parse(response.body)
 
+    response2 = DataConcern.get_month_ohlc(sym, auth.auth_token)
+    ohlc = JSON.parse(response2.body)
+
     begin
+      # set month high and low
+      output['high'] = ohlc['candles'].map { |c| c['high'] }.max
+      output['low'] = ohlc['candles'].map { |c| c['low'] }.min
       # set market price for comparison
       mkt = data['underlyingPrice']
       output['mkt'] = mkt

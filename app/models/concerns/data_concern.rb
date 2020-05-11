@@ -31,4 +31,14 @@ module DataConcern
 
     return response
   end
+
+  def self.get_month_ohlc(sym, auth_token)
+    request_url = "https://api.tdameritrade.com/v1/marketdata/#{sym}/pricehistory?apikey=#{ENV['TD_CONSUMER_KEY']}&periodType=month"
+
+    response = Curl::Easy.http_get(request_url) do |curl|
+      curl.headers["Authorization"] = "Bearer #{auth_token}"
+    end
+
+    return response
+  end
 end

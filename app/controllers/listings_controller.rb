@@ -8,7 +8,6 @@ class ListingsController < ApplicationController
       @listing = Listing.first
 
       @syms = @listing.symbols.split(",")
-      # @output = @listing.get_data.sort
     end
   end
 
