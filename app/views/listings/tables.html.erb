@@ -17,7 +17,7 @@
         <% yws.each do |yw| %>
           <% spread = @spreads.find { |s| s.sym == sym && s.year_week == yw } %>
           <% if !spread %>
-            <td class="cell-hover" data-link="<%= charts_path(:sym => sym) %>">
+            <td class="cell-hover" data-link="<%= charts_path(:sym => sym, :yw => yw) %>">
               <b>5-3: </b><span style="font-family: courier; font-size: 16px; font-weight: 700; color: #bbbbbb"><%= "N/A".rjust(6,"\u00a0") %></span><br>
               <b>4-3: </b><span style="font-family: courier; font-size: 16px; font-weight: 700; color: #bbbbbb"><%= "N/A".rjust(6,"\u00a0") %></span><br>
               <b>3-2: </b><span style="font-family: courier; font-size: 16px; font-weight: 700; color: #bbbbbb"><%= "N/A".rjust(6,"\u00a0") %></span>
