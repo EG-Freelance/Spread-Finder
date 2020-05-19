@@ -39,7 +39,7 @@ class ListingsController < ApplicationController
   end
 
   def charts
-    @spreads = Spread.all.to_json
+    @spreads = Spread.all.sort_by { |s| [s.year_week, s.sym] }.to_json
   end
   # GET /listings/1
   # GET /listings/1.json
