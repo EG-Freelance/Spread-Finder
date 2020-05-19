@@ -27,9 +27,9 @@
               <% !spread.five_three_val_m.nil? && !spread.five_three_val_f.nil? ? five_three_val = (spread.five_three_val_f - spread.five_three_val_m)/spread.five_three_val_m : five_three_val = nil %>
               <% !spread.four_three_val_m.nil? && !spread.four_three_val_f.nil? ? four_three_val = (spread.four_three_val_f - spread.four_three_val_m)/spread.four_three_val_m : four_three_val = nil %>
               <% !spread.three_two_val_m.nil? && !spread.three_two_val_f.nil? ? three_two_val = (spread.three_two_val_f - spread.three_two_val_m)/spread.three_two_val_m : three_two_val = nil %>
-              <b>5-3: </b><span style="font-family: courier; font-size: 16px; font-weight: 700; color: <%= if five_three_val.nil? then "#bbbbbb" elsif five_three_val < 0 then "#ffcccc" else "#ccffcc" end %>"><%= !five_three_val.nil? ? (five_three_val * 100).to_i.to_s.rjust(6,"\u00a0") + "%" : "N/A" %></span><br>
-              <b>4-3: </b><span style="font-family: courier; font-size: 16px; font-weight: 700; color: <%= if four_three_val.nil? then "#bbbbbb" elsif four_three_val < 0 then "#ffcccc" else "#ccffcc" end %>"><%= !four_three_val.nil? ? (four_three_val * 100).to_i.to_s.rjust(6,"\u00a0") + "%" : "N/A" %></span><br>
-              <b>3-2: </b><span style="font-family: courier; font-size: 16px; font-weight: 700; color: <%= if three_two_val.nil? then "#bbbbbb" elsif three_two_val < 0 then "#ffcccc" else "#ccffcc" end %>"><%= !three_two_val.nil? ? (three_two_val * 100).to_i.to_s.rjust(6,"\u00a0") + "%" : "N/A" %></span>
+              <b>5-3: </b><span style="font-family: courier; font-size: 16px; font-weight: 700; color: <%= if five_three_val.nil? then "#bbbbbb" elsif five_three_val < 0 then "#ffcccc" else "#ccffcc" end %>"><%= !five_three_val.nil? ? (five_three_val * 100).to_i.to_s.rjust(6,"\u00a0") + "%" : "N/A".rjust(6, "\u00a0") %></span><br>
+              <b>4-3: </b><span style="font-family: courier; font-size: 16px; font-weight: 700; color: <%= if four_three_val.nil? then "#bbbbbb" elsif four_three_val < 0 then "#ffcccc" else "#ccffcc" end %>"><%= !four_three_val.nil? ? (four_three_val * 100).to_i.to_s.rjust(6,"\u00a0") + "%" : "N/A".rjust(6, "\u00a0") %></span><br>
+              <b>3-2: </b><span style="font-family: courier; font-size: 16px; font-weight: 700; color: <%= if three_two_val.nil? then "#bbbbbb" elsif three_two_val < 0 then "#ffcccc" else "#ccffcc" end %>"><%= !three_two_val.nil? ? (three_two_val * 100).to_i.to_s.rjust(6,"\u00a0") + "%" : "N/A".rjust(6, "\u00a0") %></span>
             </td>
           <% end %>
         <% end %>
@@ -37,6 +37,9 @@
     <% end %>
   </tbody>
 </table>
+
+<span style="margin-left: 20px; margin-right: 20px"><i>NOTE: For consistency, table only shows cells for which both Monday and Friday values existed</i></span>
+<hr>
 
 <script>
   $(document).ready(function(){
