@@ -1,5 +1,6 @@
 class ListingsController < ApplicationController
   before_action :set_listing, only: [:show, :edit, :update, :destroy]
+  before_action :set_spreads, only: [:charts, :tables]
 
   # GET /listings
   # GET /listings.json
@@ -39,7 +40,11 @@ class ListingsController < ApplicationController
   end
 
   def charts
-    @spreads = Spread.all.sort_by { |s| [s.year_week, s.sym] }.to_json
+    @b_sym = params['sym']
+    @b_yw = params['yw']
+  end
+
+  def tables
   end
   # GET /listings/1
   # GET /listings/1.json
@@ -105,6 +110,9 @@ class ListingsController < ApplicationController
   end
 
   private
+    def set_spreads
+      @spreads = Spread.all.sort_by { |s| [s.year_week, s.sym] }
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_listing
       @listing = Listing.find(params[:id])

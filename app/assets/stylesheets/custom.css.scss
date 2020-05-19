@@ -21,3 +21,20 @@
 .sym-header {
   color: rgb(108, 255, 128)
 }
+
+.row-hover:hover {
+  background-color: #000000;
+}
+
+.cell-hover {
+  cursor: pointer;
+  background-color: initial;
+}
+
+.cell-hover:hover {
+  background-color: #000000;
+}
+
+.nav-link:hover, .navbar-brand:hover {
+  background-color: initial;
+}

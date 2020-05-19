@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   authenticated do
     get '/charts' => 'listings#charts', :as => "charts"
+    get '/tables' => 'listings#tables', :as => "tables"
     get '/listings/rm/:sym' => 'listings#remove', :as => "remove_sym"
     patch '/ujs/update_data/:sym' => 'listings#update_data', :as => "update_data"
     post '/listings/add/' => 'listings#add', :as => "add_sym"

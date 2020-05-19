@@ -1,11 +1,11 @@
-<%= content_tag(:div, "", 'data-spread-values' => @spreads, :hidden => true, :id => "chart-data") %>
+<%= content_tag(:div, "", 'data-spread-values' => @spreads.to_json, :hidden => true, :id => "chart-data") %>
 
 <div id="sym-sel">
-  <%= select_tag "symbol", options_for_select(JSON.parse(@spreads).collect { |s| s['sym'] }.uniq.sort), :class => "form-control chart-selectors" %>
+  <%= select_tag "symbol", options_for_select(@spreads.collect { |s| s['sym'] }.uniq.sort, @b_sym), :class => "form-control chart-selectors" %>
 </div>
 
 <div id="yw-sel">
-  <%= select_tag "year_week", options_for_select(JSON.parse(@spreads).select { |s| s['sym'] == JSON.parse(@spreads).first['sym'] }.map { |s| [s['year_week'][0..3] + " - Week " + s['year_week'][-2..-1], s['year_week']] }.uniq.sort), :class => "form-control chart-selectors" %>
+  <%= select_tag "year_week", options_for_select(@spreads.select { |s| s['sym'] == @spreads.first['sym'] }.map { |s| [s['year_week'][0..3] + " - Week " + s['year_week'][-2..-1], s['year_week']] }.uniq.sort, @b_yw), :class => "form-control chart-selectors" %>
 </div>
 
 <canvas id="chart"></canvas>
