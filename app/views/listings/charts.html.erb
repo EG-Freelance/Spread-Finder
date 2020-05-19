@@ -133,19 +133,23 @@
           }]
         }
       }
-    });    
+    });
+
+    return myChart  
   }
 
   $(document).ready(function(){
-    drawChart();
+    myChart = drawChart();
 
     $('#symbol').change(function(){
+      myChart.destroy();
       fillYw();
-      drawChart();
+      myChart = drawChart();
     });
 
     $('#year_week').change(function(){
-      drawChart();
+      myChart.destroy();
+      myChart = drawChart();
     });
   })
 </script>
