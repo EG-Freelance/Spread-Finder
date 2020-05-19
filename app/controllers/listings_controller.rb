@@ -42,6 +42,18 @@ class ListingsController < ApplicationController
   def charts
     @b_sym = params['sym']
     @b_yw = params['yw']
+
+    if @spreads.find { |s| s.sym == @b_sym && s.year_week == @b_yw }.nil?
+      # if spread doesn't exist, default to first spread for that sym
+      proxy = @spreads.find { |s| s.sym == @b_sym }
+      if !proxy.nil?
+        @b_yw = proxy.year_week
+      else
+        # if spreads for that sym also don't exist, default to first spread
+        @b_sym = @spreads.first.sym
+        @b_yw = @spreads.first.year_week
+      end
+    end
   end
 
   def tables

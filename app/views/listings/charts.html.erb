@@ -5,7 +5,7 @@
 </div>
 
 <div id="yw-sel">
-  <%= select_tag "year_week", options_for_select(@spreads.select { |s| s['sym'] == @spreads.first['sym'] }.map { |s| [s['year_week'][0..3] + " - Week " + s['year_week'][-2..-1], s['year_week']] }.uniq.sort, @b_yw), :class => "form-control chart-selectors" %>
+  <%= select_tag "year_week", options_for_select(@spreads.select { |s| s['sym'] == @b_sym }.map { |s| [s['year_week'][0..3] + " - Week " + s['year_week'][-2..-1], s['year_week']] }.uniq.sort, @b_yw), :class => "form-control chart-selectors" %>
 </div>
 
 <canvas id="chart"></canvas>
